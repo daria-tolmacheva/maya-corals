@@ -1,0 +1,66 @@
+// Determine z offset of specific step
+proc float calcOffsetZ(int $totalIndex, int $numSteps[])
+{
+  if ($totalIndex < $numSteps[0])
+    return 0;
+  else if ($totalIndex > ($numSteps[0] + $numSteps[1] + $numSteps[2]))
+    return -6;
+  else
+    return -12;
+}
+
+// Determine x offset of specific step
+proc float calcOffsetX(int $totalIndex, int $numSteps[])
+{
+  if ($totalIndex <= ($numSteps[0] + $numSteps[1]))
+    return 0;
+  else
+    return 12;
+}
+
+// Create a single step
+proc createStep(int $index, int $totalIndex, float $dirX, float $dirZ, int $numOfSteps[])
+{
+  $offsetX = calcOffsetX($totalIndex, $numOfSteps);
+  $offsetZ = calcOffsetZ($totalIndex, $numOfSteps);
+  $height = 10 + $totalIndex * 0.3;
+  if ($totalIndex == 0)
+    polyCube -name "stepAutoGen" -w 2 -d 3.5 -h $height;
+  else
+    polyCube -name "stepAutoGen" -w 2 -d 2 -h $height;
+  $mx = $index * 2 * $dirX + $offsetX;
+  $my = $height/2.0;
+  $mz = $index * 2 * $dirZ + $offsetZ;
+  move $mx $my $mz;
+}
+
+// Number of steps in each section of the staircase
+int $numberOfSteps[] = {7,6,3,1};
+
+// Create steps section be section
+// Section 1
+for($i = 0; $i < $numberOfSteps[0]; ++$i)
+  {
+    createStep($i, $i, 0, -1, $numberOfSteps);
+  }
+// Section 2
+for($i = 1; $i <= $numberOfSteps[1]; ++$i)
+  {
+    createStep($i, $i + $numberOfSteps[0], 1, 0, $numberOfSteps);
+  }
+// Section 3
+for($i = 1; $i <= $numberOfSteps[2]; ++$i)
+  {
+    createStep($i, $i + $numberOfSteps[0] + $numberOfSteps[1], 0, 1, $numberOfSteps);
+  }
+// Section 4
+for($i = 1; $i <= $numberOfSteps[3]; ++$i)
+  {
+    createStep($i, $i + $numberOfSteps[0] + $numberOfSteps[1] + $numberOfSteps[2], -1, 0, $numberOfSteps);
+  }
+
+// Combine steps into a single object
+string $shapes[] = `ls -type "shape" "stepAutoGen*"`;
+select $shapes;
+$name = `polyCBoolOp  -op 1 -name InfiniteStaircase`;
+delete -ch $name;

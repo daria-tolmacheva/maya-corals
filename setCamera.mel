@@ -1,0 +1,14 @@
+// Very small script to hold my camera data position for
+// infinite staircase so it is not lost accidentally
+
+select -r persp ;
+
+setAttr "persp.translateX" 27.603;
+setAttr "persp.translateY" 27.861;
+setAttr "persp.translateZ" -20.893;
+
+setAttr "persp.rotateX" -28.538;
+setAttr "persp.rotateY" 125.400;
+setAttr "persp.rotateZ" 0.000;
+
+setAttr "perspShape.focalLength" 35;
