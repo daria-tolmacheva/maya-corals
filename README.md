@@ -13,6 +13,8 @@ These are the first scripts I've made for the project so they are a bit clunky e
 
 ## `coral_builder.py`
 
+<img src="./images/coral1.png" width="28.4%"> <img src="./images/coral2.png" width="31.6%"> <img src="./images/coral3.png" width="33.5%">
+
 Has a dependency on `numpy` library. To run just do the usual procedure for a python script.
 
 Running it as is will result in 4 different corals being generated. In the interest of time I have not implemented a UI so to change parameters edit them in the end of the script under "execute" section.
